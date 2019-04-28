@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>编辑文档 - Powered by MinDoc</title>
+    <title>编辑文档</title>
     <script type="text/javascript">
         window.treeCatalog = null;
         window.baseUrl = "{{.BaseUrl}}";
@@ -55,9 +55,6 @@
 
 <div class="m-manual manual-editor">
     <div class="manual-head" id="editormd-tools" style="min-width: 1200px; position:absolute;">
-        <div class="editormd-group">
-            <a href="{{urlfor "BookController.Index"}}" data-toggle="tooltip" data-title="返回"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
-        </div>
         <div class="editormd-group">
             <a href="javascript:;" id="markdown-save" data-toggle="tooltip" data-title="保存" class="disabled save"><i class="fa fa-save first" aria-hidden="true" name="save"></i></a>
             <a href="javascript:;" id="markdown-template" data-toggle="tooltip" data-title="保存为模板" class="template"><i class="fa fa-briefcase last" aria-hidden="true" name="save-template"></i></a>

@@ -41,7 +41,6 @@
                 <span style="font-size: 12px;font-weight: 100;"></span>
             </div>
             <div class="navbar-header pull-right manual-menu">
-                <a href="javascript:window.print();" id="printSinglePage" class="btn btn-default" style="margin-right: 10px;"><i class="fa fa-print"></i> 打印</a>
                 {{if gt .Member.MemberId 0}}
                 {{if eq .Model.RoleId 0 1 2}}
                 <div class="dropdown pull-right">
@@ -125,11 +124,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="m-copyright">
-                <p>
-                    本文档使用 <a href="https://www.iminho.me" target="_blank">MinDoc</a> 发布
-                </p>
             </div>
         </div>
         <div class="manual-right">
