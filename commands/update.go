@@ -8,13 +8,13 @@ import (
 	"os"
 
 	"github.com/astaxie/beego"
-	"github.com/lifei6671/mindoc/conf"
+	"github.com/changming1987117/mindoc/conf"
 )
 
 //检查最新版本.
 func CheckUpdate() {
 
-	resp, err := http.Get("https://api.github.com/repos/lifei6671/mindoc/tags")
+	resp, err := http.Get("https://api.github.com/repos/changming1987117/mindoc/tags")
 
 	if err != nil {
 		beego.Error("CheckUpdate => ", err)

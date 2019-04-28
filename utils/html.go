@@ -5,7 +5,7 @@ import (
 	"strings"
 	"github.com/PuerkitoBio/goquery"
 	"bytes"
-	"github.com/lifei6671/mindoc/conf"
+	"github.com/changming1987117/mindoc/conf"
 )
 
 func StripTags(s string) string  {

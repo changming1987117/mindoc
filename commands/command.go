@@ -22,10 +22,10 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/howeyc/fsnotify"
 	"github.com/lifei6671/gocaptcha"
-	"github.com/lifei6671/mindoc/cache"
-	"github.com/lifei6671/mindoc/conf"
-	"github.com/lifei6671/mindoc/models"
-	"github.com/lifei6671/mindoc/utils/filetil"
+	"github.com/changming1987117/mindoc/cache"
+	"github.com/changming1987117/mindoc/conf"
+	"github.com/changming1987117/mindoc/models"
+	"github.com/changming1987117/mindoc/utils/filetil"
 	"net/http"
 )
 

@@ -13,8 +13,8 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
-	"github.com/lifei6671/mindoc/conf"
-	"github.com/lifei6671/mindoc/utils"
+	"github.com/changming1987117/mindoc/conf"
+	"github.com/changming1987117/mindoc/utils"
 	"math"
 )
 

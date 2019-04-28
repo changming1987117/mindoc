@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/astaxie/beego/orm"
-	"github.com/lifei6671/mindoc/models"
+	"github.com/changming1987117/mindoc/models"
 	"strings"
 	"time"
 )

@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/astaxie/beego/orm"
-	"github.com/lifei6671/mindoc/utils/filetil"
+	"github.com/changming1987117/mindoc/utils/filetil"
 )
 
 type AttachmentResult struct {

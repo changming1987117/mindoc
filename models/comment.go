@@ -3,7 +3,7 @@ package models
 import (
 	"errors"
 	"github.com/astaxie/beego/orm"
-	"github.com/lifei6671/mindoc/conf"
+	"github.com/changming1987117/mindoc/conf"
 	"time"
 )
 

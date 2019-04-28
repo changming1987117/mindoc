@@ -2,15 +2,15 @@ package models
 
 import (
 	"time"
-	"github.com/lifei6671/mindoc/conf"
+	"github.com/changming1987117/mindoc/conf"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego"
-	"github.com/lifei6671/mindoc/cache"
+	"github.com/changming1987117/mindoc/cache"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"strings"
 	"bytes"
-	"github.com/lifei6671/mindoc/utils"
+	"github.com/changming1987117/mindoc/utils"
 )
 
 //博文表

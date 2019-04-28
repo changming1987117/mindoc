@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
-	"github.com/lifei6671/mindoc/conf"
-	"github.com/lifei6671/mindoc/models"
-	"github.com/lifei6671/mindoc/utils"
+	"github.com/changming1987117/mindoc/conf"
+	"github.com/changming1987117/mindoc/models"
+	"github.com/changming1987117/mindoc/utils"
 	"path/filepath"
 	"io/ioutil"
 	"html/template"
