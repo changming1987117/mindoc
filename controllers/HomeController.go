@@ -116,14 +116,16 @@ func (c *HomeController) Prepare() {
 				m.Password = email
 				m.Email = email
 				m.RealName = chineseName
-			} else{
-			member.Account = userName
-			member.Password = email
-			member.Role = 2
-			member.Avatar = conf.GetDefaultAvatar()
-			member.CreateAt = 1
-			member.Email = email
-			member.RealName = chineseName
+				m.Update()
+			} else {
+				member.Account = userName
+				member.Password = email
+				member.Role = 2
+				member.Avatar = conf.GetDefaultAvatar()
+				member.CreateAt = 1
+				member.Email = email
+				member.RealName = chineseName
+				member.Add()
 			}
 			loginMem, err := member.Login(userName, email)
 			if err == nil {
@@ -141,7 +143,6 @@ func (c *HomeController) Prepare() {
 
 	//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
 }
-
 
 func (c *HomeController) Index() {
 	c.Prepare()
