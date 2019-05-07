@@ -137,9 +137,12 @@ func (c *HomeController) Prepare() {
 			if err == nil {
 				loginMem.LastLoginTime = time.Now()
 				loginMem.Update()
+				beego.Info("login sucess")
 				c.SetMember(*loginMem)
 				returnUrl = conf.URLFor("BookController.Index")
+				beego.Info(returnUrl)
 				c.Redirect(returnUrl, 302)
+				return
 			}
 		}
 		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+u)
