@@ -124,7 +124,7 @@ func (c *HomeController) Prepare() {
 				m := models.NewRelationship()
 				m.BookId = 2
 				m.MemberId = member.MemberId
-				m.RoleId = 2
+				m.RoleId = 3
 				m.Insert()
 			}
 			beego.Info("test")
