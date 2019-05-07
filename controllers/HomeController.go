@@ -22,17 +22,16 @@ type HomeController struct {
  * get_user_info
  */
 func (c *HomeController) getUserInfo(ticket string) {
-	//app_id := beego.AppConfig.String("sec_id")
-	//app_key := beego.AppConfig.String("sec_key")
+	appid := beego.AppConfig.String("appid")
+	appkey := beego.AppConfig.String("sec_key")
 	getUserUrl := beego.AppConfig.String("getUserUrl")
-	//auth_url_template := beego.AppConfig.String("auth_url_template")
 	proxyUrl := beego.AppConfig.String("proxy")
+	realurl := getUserUrl + "?appid=" + appid + "&appsecret=" + appkey + "&" + ticket
+	beego.Info(realurl)
 	/*
 		1. 代理请求
 		2. 跳过https不安全验证
 	*/
-	// webUrl := "http://ip.gs/"
-	// proxyUrl := "http://115.215.71.12:808"
 	proxy, _ := url.Parse(proxyUrl)
 	tr := &http.Transport{
 		Proxy:           http.ProxyURL(proxy),
@@ -42,7 +41,7 @@ func (c *HomeController) getUserInfo(ticket string) {
 		Transport: tr,
 		Timeout:   time.Second * 5, //超时时间
 	}
-	resp, err := client.Get(getUserUrl)
+	resp, err := client.Get(realurl)
 	if err != nil {
 		fmt.Println("出错了", err)
 		return
@@ -50,6 +49,7 @@ func (c *HomeController) getUserInfo(ticket string) {
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
+	beego.Info(body)
 
 }
 
@@ -67,7 +67,7 @@ func (c *HomeController) Prepare() {
 		if strings.Contains(u, ticket){
 			beego.Info(ticket)
 			ticketLists := strings.Split(u, "?")
-			realticket := ticketLists[1]
+			realticket := strings.Split(ticketLists[1], "&")[0]
 			returnUrl := ticketLists[0]
 			beego.Info(returnUrl)
 			beego.Info(realticket)
