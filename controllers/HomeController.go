@@ -107,12 +107,12 @@ func (c *HomeController) Prepare() {
 			email := res.Data["email"]
 			beego.Info(email)
 			member := models.NewMember()
-			m, err := member.FindByAccount(userName)
+			member, err := member.FindByAccount(userName)
 			if err == nil && member.MemberId > 0 {
-				m.Password = email
-				m.Email = email
-				m.RealName = chineseName
-				m.Update()
+				member.Password = email
+				member.Email = email
+				member.RealName = chineseName
+				member.Update()
 			} else {
 				member.Account = userName
 				member.Password = email
