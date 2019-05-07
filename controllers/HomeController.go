@@ -109,10 +109,6 @@ func (c *HomeController) Prepare() {
 			member := models.NewMember()
 			member, err := member.FindByAccount(userName)
 			if err == nil && member.MemberId > 0 {
-				member.Password = email
-				member.Email = email
-				member.RealName = chineseName
-				member.Update()
 			} else {
 				member.Account = userName
 				member.Password = email
