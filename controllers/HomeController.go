@@ -80,7 +80,7 @@ func (c *HomeController) Prepare() {
 			if member, err := models.NewMember().Find(remember.MemberId); err == nil {
 				c.SetMember(*member)
 				account.LoggedIn(false)
-				u = conf.URLFor("HomeController.Index")
+				u = conf.URLFor("BookController.Index")
 				c.Redirect(u, 302)
 			}
 		}
@@ -135,7 +135,7 @@ func (c *HomeController) Prepare() {
 				loginMem.LastLoginTime = time.Now()
 				loginMem.Update()
 				c.SetMember(*loginMem)
-				returnUrl = conf.URLFor("HomeController.Index")
+				returnUrl = conf.URLFor("BookController.Index")
 				c.Redirect(returnUrl, 302)
 			}
 		}
