@@ -53,9 +53,6 @@
                 {{end}}
                 {{end}}
                 <div class="dropdown pull-right" style="margin-right: 10px;">
-                    <a href="{{urlfor "HomeController.Index"}}" class="btn btn-default"><i class="fa fa-home" aria-hidden="true"></i> 首页</a>
-                </div>
-                <div class="dropdown pull-right" style="margin-right: 10px;">
                 {{if eq .Model.PrivatelyOwned 0}}
                 {{if .Model.IsEnableShare}}
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#shareProject"><i class="fa fa-share-square" aria-hidden="true"></i> 分享</button>
