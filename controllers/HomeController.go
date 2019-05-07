@@ -5,7 +5,6 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/changming1987117/mindoc/models"
 	"github.com/changming1987117/mindoc/utils/pagination"
-	"github.com/changming1987117/mindoc/conf"
 	"net/url"
 )
 
@@ -21,7 +20,7 @@ func (c *HomeController) Prepare() {
 		loginUrl := beego.AppConfig.String("loginUrl")
 		sysUrl := beego.AppConfig.String("sysUrl")
 		appid := beego.AppConfig.String("appid")
-		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+ctx.Request.URL.RequestURI())
+		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+c.Ctx.Request.URL.RequestURI())
 		beego.Info(redirecturl)
 		c.Redirect(redirecturl, 302)
 		//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
