@@ -124,13 +124,18 @@ func (c *HomeController) Prepare() {
 				if err != nil {
 					beego.Info(err)
 				}
+				m := models.NewRelationship()
+				m.BookId = 2
+				m.MemberId = member.MemberId
+				m.RoleId = 2
+				m.Insert()
 			}
 			loginMem, err := member.Login(userName, email)
 			if err == nil {
 				loginMem.LastLoginTime = time.Now()
 				loginMem.Update()
 				c.SetMember(*loginMem)
-				beego.Info(returnUrl)
+				returnUrl = conf.URLFor("HomeController.Index")
 				c.Redirect(returnUrl, 302)
 			}
 		}
