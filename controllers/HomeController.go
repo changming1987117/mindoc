@@ -66,11 +66,12 @@ func (c *HomeController) Prepare() {
 		beego.Info(u)
 		if strings.Contains(u, ticket){
 			beego.Info(ticket)
-			ticketLists := strings.Split(u, ";")
-			ticket := ticketLists[1]
+			ticketLists := strings.Split(u, "?")
+			realticket := ticketLists[1]
 			returnUrl := ticketLists[0]
 			beego.Info(returnUrl)
-			c.getUserInfo(ticket)
+			beego.Info(realticket)
+			c.getUserInfo(realticket)
 		}
 		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+u)
 		beego.Info(redirecturl)
