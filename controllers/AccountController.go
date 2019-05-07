@@ -65,10 +65,10 @@ func (c *AccountController) Prepare() {
  * get_user_info
  */
 func (c *AccountController) getUserInfo(ticket string) {
-	app_id := beego.AppConfig.String("sec_id")
-	app_key := beego.AppConfig.String("sec_key")
+	//app_id := beego.AppConfig.String("sec_id")
+	//app_key := beego.AppConfig.String("sec_key")
 	opd_get_user_url := beego.AppConfig.String("opd_get_user_url")
-	auth_url_template := beego.AppConfig.String("auth_url_template")
+	//auth_url_template := beego.AppConfig.String("auth_url_template")
 	proxyUrl := beego.AppConfig.String("proxy")
 	/*
 		1. 代理请求
@@ -115,7 +115,7 @@ func (c *AccountController) Login() {
 		if strings.Contains(u, "kgLoginTicket"){
 			ticket_list := strings.Split(u, ";")
 			ticket := ticket_list[1]
-			returnUrl := ticket_list[0]
+			//returnUrl := ticket_list[0]
 			c.getUserInfo(ticket)
 		}
 		url := "http://opd.kugou.net/common/signinApi.php?appId=" + app_id + "&url=" + u
