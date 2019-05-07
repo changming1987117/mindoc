@@ -74,7 +74,7 @@ func (c *HomeController) Prepare() {
 		beego.Info(u)
 		if u == "" {
 
-			u = conf.URLFor("HomeController.Index")
+			u = conf.URLFor("BookController.Index")
 		}
 		beego.Info(u)
 		c.Redirect(u, 302)
