@@ -101,15 +101,15 @@ func (c *HomeController) Prepare() {
 			ticketLists := strings.Split(u, "?")
 			realticket := strings.Split(ticketLists[1], "&")[0]
 			returnUrl := ticketLists[0]
-			beego.Info(returnUrl)
-			beego.Info(realticket)
 			resp := c.getUserInfo(realticket)
 			var res Result
 			json.Unmarshal(resp, &res)
-			beego.Info(res.Data)
 			chineseName := res.Data["chineseName"]
 			userName := res.Data["userName"]
 			email := res.Data["email"]
+			beego.Info(email)
+			beego.Info(chineseName)
+			beego.Info(userName)
 			member := models.NewMember()
 			m, err := member.FindByAccount(userName)
 			if err == nil && member.MemberId > 0 {
@@ -121,7 +121,7 @@ func (c *HomeController) Prepare() {
 			member.Password = email
 			member.Role = 2
 			member.Avatar = conf.GetDefaultAvatar()
-			member.CreateAt = 0
+			member.CreateAt = 1
 			member.Email = email
 			member.RealName = chineseName
 			}
@@ -130,9 +130,8 @@ func (c *HomeController) Prepare() {
 				loginMem.LastLoginTime = time.Now()
 				loginMem.Update()
 				c.SetMember(*loginMem)
-				redirecturl := url.PathEscape(sysUrl + u)
-				beego.Info(redirecturl)
-				c.Redirect(redirecturl, 302)
+				beego.Info(returnUrl)
+				c.Redirect(returnUrl, 302)
 			}
 		}
 		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+u)
