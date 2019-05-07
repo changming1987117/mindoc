@@ -42,10 +42,10 @@
             </div>
             <div class="navbar-header pull-right manual-menu">
                 {{if gt .Member.MemberId 0}}
-                {{if eq .Model.RoleId 0 1}}
+                {{if eq .Model.RoleId 0 1  2}}
                 <div class="dropdown pull-right">
                     <a href="{{urlfor "DocumentController.Edit" ":key" .Model.Identify ":id" ""}}" class="btn btn-default"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</a>
-                    {{if eq .Model.RoleId 0 1 2}}
+                    {{if eq .Model.RoleId 0 1}}
                     <a href="{{urlfor "BookController.Users" ":key" .Model.Identify}}" class="btn btn-success"><i class="fa fa-user" aria-hidden="true"></i> 成员</a>
                     <a href="{{urlfor "BookController.Setting" ":key" .Model.Identify}}" class="btn btn-primary"><i class="fa fa-gear" aria-hidden="true"></i> 设置</a>
                     {{end}}
