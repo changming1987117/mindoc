@@ -61,9 +61,6 @@ func (c *AccountController) Prepare() {
 // Login 用户登录
 func (c *AccountController) Login() {
 	c.Prepare()
-	beego.Info("初始访问111")
-	loginUrl := beego.AppConfig.String("loginUrl")
-	appid := beego.AppConfig.String("appid")
 	c.TplName = "account/login.tpl"
 
 	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
@@ -75,9 +72,7 @@ func (c *AccountController) Login() {
 
 			u = conf.URLFor("HomeController.Index")
 		}
-		redirecturl  := loginUrl + "?appId=" + appid + "&url=" + u
-		beego.Info(redirecturl)
-		c.Redirect(redirecturl, 302)
+		c.Redirect(u, 302)
 	}
 	var remember CookieRemember
 	// 如果 Cookie 中存在登录信息

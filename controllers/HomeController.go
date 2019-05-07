@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/changming1987117/mindoc/models"
 	"github.com/changming1987117/mindoc/utils/pagination"
+	"github.com/changming1987117/mindoc/conf"
 	"net/url"
 	"net/http"
 	"crypto/tls"
@@ -20,9 +21,9 @@ type HomeController struct {
 }
 
 type Result struct {
-	Code int
+	Code    int
 	Message string
-	Data map[string]interface{}
+	Data    map[string]string
 }
 
 /**
@@ -70,7 +71,7 @@ func (c *HomeController) Prepare() {
 		ticket := beego.AppConfig.String("ticket")
 		u := c.Ctx.Request.URL.RequestURI()
 		beego.Info(u)
-		if strings.Contains(u, ticket){
+		if strings.Contains(u, ticket) {
 			beego.Info(ticket)
 			ticketLists := strings.Split(u, "?")
 			realticket := strings.Split(ticketLists[1], "&")[0]
@@ -81,14 +82,42 @@ func (c *HomeController) Prepare() {
 			var res Result
 			json.Unmarshal(resp, &res)
 			beego.Info(res.Data)
-
+			chineseName := res.Data["chineseName"]
+			userName := res.Data["userName"]
+			email := res.Data["email"]
+			member := models.NewMember()
+			m, err := member.FindByAccount(userName)
+			if err == nil && member.MemberId > 0 {
+				m.Password = email
+				m.Email = email
+				m.RealName = chineseName
+			} else{
+			member.Account = userName
+			member.Password = email
+			member.Role = 2
+			member.Avatar = conf.GetDefaultAvatar()
+			member.CreateAt = 0
+			member.Email = email
+			member.RealName = chineseName
+			}
+			loginMem, err := member.Login(userName, email)
+			if err == nil {
+				loginMem.LastLoginTime = time.Now()
+				loginMem.Update()
+				c.SetMember(*loginMem)
+				redirecturl := url.PathEscape(sysUrl + u)
+				beego.Info(redirecturl)
+				c.Redirect(redirecturl, 302)
+			}
 		}
 		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+u)
 		beego.Info(redirecturl)
 		c.Redirect(redirecturl, 302)
-		//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
 	}
+
+	//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
 }
+
 
 func (c *HomeController) Index() {
 	c.Prepare()
