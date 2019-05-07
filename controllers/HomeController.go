@@ -107,9 +107,6 @@ func (c *HomeController) Prepare() {
 			chineseName := res.Data["chineseName"]
 			userName := res.Data["userName"]
 			email := res.Data["email"]
-			beego.Info(email)
-			beego.Info(chineseName)
-			beego.Info(userName)
 			member := models.NewMember()
 			m, err := member.FindByAccount(userName)
 			if err == nil && member.MemberId > 0 {
@@ -125,7 +122,10 @@ func (c *HomeController) Prepare() {
 				member.CreateAt = 1
 				member.Email = email
 				member.RealName = chineseName
-				member.Add()
+				err :=member.Add()
+				if err != nil {
+					beego.Info(err)
+				}
 			}
 			loginMem, err := member.Login(userName, email)
 			if err == nil {
