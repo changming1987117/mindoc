@@ -26,13 +26,13 @@ func init() {
 				ctx.ResponseWriter.Write(returnJSON)
 			} else {
 				beego.Info("初始访问")
-				login_url := beego.AppConfig.String("login_url")
-				sys_url := beego.AppConfig.String("sys_url")
+				loginUrl := beego.AppConfig.String("loginUrl")
+				sysUrl := beego.AppConfig.String("sysUrl")
 				appid := beego.AppConfig.String("appid")
-				url := login_url + "?appId=" + appid + "&url=" + url.PathEscape(sys_url+ctx.Request.URL.RequestURI())
+				redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+ctx.Request.URL.RequestURI())
 				//ctx.Redirect(302, conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+ctx.Request.URL.RequestURI()))
-				beego.Info(url)
-				ctx.Redirect(302, url)
+				beego.Info(redirecturl)
+				ctx.Redirect(302, redirecturl)
 			}
 		}
 	}

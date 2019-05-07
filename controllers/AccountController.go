@@ -100,7 +100,8 @@ func (c *AccountController) getUserInfo(ticket string) {
 func (c *AccountController) Login() {
 	c.Prepare()
 	beego.Info("初始访问111")
-	app_id := beego.AppConfig.String("appid")
+	loginUrl := beego.AppConfig.String("loginUrl")
+	appid := beego.AppConfig.String("appid")
 	c.TplName = "account/login.tpl"
 
 	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
@@ -113,14 +114,14 @@ func (c *AccountController) Login() {
 			u = conf.URLFor("HomeController.Index")
 		}
 		if strings.Contains(u, "kgLoginTicket"){
-			ticket_list := strings.Split(u, ";")
-			ticket := ticket_list[1]
-			//returnUrl := ticket_list[0]
+			ticketLists := strings.Split(u, ";")
+			ticket := ticketLists[1]
+			//returnUrl := ticketLists[0]
 			c.getUserInfo(ticket)
 		}
-		url := "http://opd.kugou.net/common/signinApi.php?appId=" + app_id + "&url=" + u
-		beego.Info(url)
-		c.Redirect(url, 302)
+		redirecturl  := loginUrl + "?appId=" + appid + "&url=" + u
+		beego.Info(redirecturl)
+		c.Redirect(redirecturl, 302)
 	}
 	var remember CookieRemember
 	// 如果 Cookie 中存在登录信息

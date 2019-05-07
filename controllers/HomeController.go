@@ -17,7 +17,14 @@ func (c *HomeController) Prepare() {
 	c.BaseController.Prepare()
 	//如果没有开启匿名访问，则跳转到登录页面
 	if !c.EnableAnonymous && c.Member == nil {
-		c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
+		beego.Info("初始访问")
+		loginUrl := beego.AppConfig.String("loginUrl")
+		sysUrl := beego.AppConfig.String("sysUrl")
+		appid := beego.AppConfig.String("appid")
+		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+ctx.Request.URL.RequestURI())
+		beego.Info(redirecturl)
+		c.Redirect(redirecturl, 302)
+		//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
 	}
 }
 
