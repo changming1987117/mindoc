@@ -64,7 +64,7 @@ func (c *AccountController) Prepare() {
 /**
  * get_user_info
  */
-func (c *AccountController) getUserInfo(ticket) {
+func (c *AccountController) getUserInfo(ticket string) {
 	app_id := beego.AppConfig.String("sec_id")
 	app_key := beego.AppConfig.String("sec_key")
 	opd_get_user_url := beego.AppConfig.String("opd_get_user_url")
@@ -85,7 +85,7 @@ func (c *AccountController) getUserInfo(ticket) {
 		Transport: tr,
 		Timeout:   time.Second * 5, //超时时间
 	}
-	resp, err := client.Get(webUrl)
+	resp, err := client.Get(opd_get_user_url)
 	if err != nil {
 		fmt.Println("出错了", err)
 		return
