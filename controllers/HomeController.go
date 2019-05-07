@@ -105,6 +105,7 @@ func (c *HomeController) Prepare() {
 			chineseName := res.Data["chineseName"]
 			userName := res.Data["userName"]
 			email := res.Data["email"]
+			beego.Info(email)
 			member := models.NewMember()
 			m, err := member.FindByAccount(userName)
 			if err == nil && member.MemberId > 0 {
@@ -130,6 +131,7 @@ func (c *HomeController) Prepare() {
 				m.RoleId = 2
 				m.Insert()
 			}
+			beego.Info("test")
 			loginMem, err := member.Login(userName, email)
 			if err == nil {
 				loginMem.LastLoginTime = time.Now()
