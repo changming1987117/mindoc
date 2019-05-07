@@ -42,7 +42,7 @@
             </div>
             <div class="navbar-header pull-right manual-menu">
                 {{if gt .Member.MemberId 0}}
-                {{if eq .Model.RoleId 0 1 2}}
+                {{if eq .Model.RoleId 0 1}}
                 <div class="dropdown pull-right">
                     <a href="{{urlfor "DocumentController.Edit" ":key" .Model.Identify ":id" ""}}" class="btn btn-default"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</a>
                     {{if eq .Model.RoleId 0 1}}
