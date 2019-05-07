@@ -79,17 +79,19 @@ func (c *HomeController) Prepare() {
 	var account AccountController
 	// 如果 Cookie 中存在登录信息
 	if cookie, ok := c.GetSecureCookie(conf.GetAppKey(), "login"); ok {
+		beego.Info("我已经登录过了")
 		if err := utils.Decode(cookie, &remember); err == nil {
 			if member, err := models.NewMember().Find(remember.MemberId); err == nil {
 				c.SetMember(*member)
 				account.LoggedIn(false)
+				u = conf.URLFor("HomeController.Index")
 				c.Redirect(u, 302)
 			}
 		}
 	}
 	//如果没有开启匿名访问，则跳转到登录页面
 	if !c.EnableAnonymous && c.Member == nil {
-		beego.Info("初始访问")
+
 		loginUrl := beego.AppConfig.String("loginUrl")
 		sysUrl := beego.AppConfig.String("sysUrl")
 		appid := beego.AppConfig.String("appid")
