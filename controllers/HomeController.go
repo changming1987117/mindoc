@@ -86,7 +86,7 @@ func (c *HomeController) Prepare() {
 		}
 	}
 	//如果没有开启匿名访问，则跳转到登录页面
-	if !c.EnableAnonymous && c.Member == nil {
+	if c.Member == nil {
 
 		loginUrl := beego.AppConfig.String("loginUrl")
 		sysUrl := beego.AppConfig.String("sysUrl")
