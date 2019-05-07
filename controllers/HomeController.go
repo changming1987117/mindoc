@@ -133,6 +133,7 @@ func (c *HomeController) Prepare() {
 			}
 			beego.Info("test")
 			loginMem, err := member.Login(userName, email)
+			beego.Info(err)
 			if err == nil {
 				loginMem.LastLoginTime = time.Now()
 				loginMem.Update()
