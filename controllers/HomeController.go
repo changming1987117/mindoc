@@ -12,16 +12,23 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
+	"encoding/json"
 )
 
 type HomeController struct {
 	BaseController
 }
 
+type Result struct {
+	Code int
+	Message string
+	Data map[string]interface{}
+}
+
 /**
  * get_user_info
  */
-func (c *HomeController) getUserInfo(ticket string) {
+func (c *HomeController) getUserInfo(ticket string) []byte {
 	appid := beego.AppConfig.String("appid")
 	appkey := beego.AppConfig.String("sec_key")
 	getUserUrl := beego.AppConfig.String("getUserUrl")
@@ -44,12 +51,11 @@ func (c *HomeController) getUserInfo(ticket string) {
 	resp, err := client.Get(realurl)
 	if err != nil {
 		fmt.Println("出错了", err)
-		return
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
-	beego.Info(body)
+	return body
 
 }
 
@@ -71,7 +77,11 @@ func (c *HomeController) Prepare() {
 			returnUrl := ticketLists[0]
 			beego.Info(returnUrl)
 			beego.Info(realticket)
-			c.getUserInfo(realticket)
+			resp := c.getUserInfo(realticket)
+			var res Result
+			json.Unmarshal(resp, &res)
+			beego.Info(res.Data)
+
 		}
 		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+u)
 		beego.Info(redirecturl)
