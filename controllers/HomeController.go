@@ -61,9 +61,11 @@ func (c *HomeController) Prepare() {
 		loginUrl := beego.AppConfig.String("loginUrl")
 		sysUrl := beego.AppConfig.String("sysUrl")
 		appid := beego.AppConfig.String("appid")
+		ticket := beego.AppConfig.String("ticket")
 		u := c.Ctx.Request.URL.RequestURI()
 		beego.Info(u)
-		if strings.Contains(u, "kgLoginTicket"){
+		if strings.Contains(u, ticket){
+			beego.Info(ticket)
 			ticketLists := strings.Split(u, ";")
 			ticket := ticketLists[1]
 			returnUrl := ticketLists[0]
