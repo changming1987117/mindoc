@@ -6,6 +6,7 @@ import (
 	"github.com/changming1987117/mindoc/models"
 	"github.com/changming1987117/mindoc/utils/pagination"
 	"github.com/changming1987117/mindoc/conf"
+	"github.com/changming1987117/mindoc/utils"
 	"net/url"
 	"net/http"
 	"crypto/tls"
@@ -62,6 +63,30 @@ func (c *HomeController) getUserInfo(ticket string) []byte {
 
 func (c *HomeController) Prepare() {
 	c.BaseController.Prepare()
+	u := c.GetString("url")
+	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
+
+		if u == "" {
+			u = c.Ctx.Request.Header.Get("Referer")
+		}
+		if u == "" {
+
+			u = conf.URLFor("HomeController.Index")
+		}
+		c.Redirect(u, 302)
+	}
+	var remember CookieRemember
+	var account AccountController
+	// 如果 Cookie 中存在登录信息
+	if cookie, ok := c.GetSecureCookie(conf.GetAppKey(), "login"); ok {
+		if err := utils.Decode(cookie, &remember); err == nil {
+			if member, err := models.NewMember().Find(remember.MemberId); err == nil {
+				c.SetMember(*member)
+				account.LoggedIn(false)
+				c.Redirect(u, 302)
+			}
+		}
+	}
 	//如果没有开启匿名访问，则跳转到登录页面
 	if !c.EnableAnonymous && c.Member == nil {
 		beego.Info("初始访问")
