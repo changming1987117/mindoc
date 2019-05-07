@@ -64,14 +64,7 @@ func (c *HomeController) getUserInfo(ticket string) []byte {
 func (c *HomeController) Prepare() {
 	c.BaseController.Prepare()
 	u := c.GetString("url")
-	beego.Info("我已经登录过了")
 	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
-		beego.Info("我已经登录过了")
-		beego.Info(u)
-		if u == "" {
-			u = c.Ctx.Request.Header.Get("Referer")
-		}
-		beego.Info(u)
 		if u == "" {
 
 			u = conf.URLFor("BookController.Index")
@@ -83,7 +76,6 @@ func (c *HomeController) Prepare() {
 	var account AccountController
 	// 如果 Cookie 中存在登录信息
 	if cookie, ok := c.GetSecureCookie(conf.GetAppKey(), "login"); ok {
-		beego.Info("我已经登录过了")
 		if err := utils.Decode(cookie, &remember); err == nil {
 			if member, err := models.NewMember().Find(remember.MemberId); err == nil {
 				c.SetMember(*member)
