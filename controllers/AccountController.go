@@ -13,10 +13,6 @@ import (
 	"github.com/changming1987117/mindoc/models"
 	"github.com/changming1987117/mindoc/utils"
 	"html/template"
-	"net/http"
-	"crypto/tls"
-	"fmt"
-	"io/ioutil"
 )
 
 // AccountController 用户登录与注册
