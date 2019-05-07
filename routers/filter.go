@@ -25,7 +25,14 @@ func init() {
 
 				ctx.ResponseWriter.Write(returnJSON)
 			} else {
-				ctx.Redirect(302, conf.URLFor("AccountController.Login") + "?url=" +  url.PathEscape(conf.BaseUrl + ctx.Request.URL.RequestURI()))
+				beego.Info("初始访问")
+				login_url := beego.AppConfig.String("login_url")
+				sys_url := beego.AppConfig.String("sys_url")
+				appid := beego.AppConfig.String("appid")
+				url := login_url + "?appId=" + appid + "&url=" + url.PathEscape(sys_url+ctx.Request.URL.RequestURI())
+				//ctx.Redirect(302, conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+ctx.Request.URL.RequestURI()))
+				beego.Info(url)
+				ctx.Redirect(302, url)
 			}
 		}
 	}
@@ -36,7 +43,7 @@ func init() {
 	beego.InsertFilter("/book", beego.BeforeRouter, FilterUser)
 	beego.InsertFilter("/book/*", beego.BeforeRouter, FilterUser)
 	beego.InsertFilter("/api/*", beego.BeforeRouter, FilterUser)
-	beego.InsertFilter("/manage/*", beego.BeforeRouter,FilterUser)
+	beego.InsertFilter("/manage/*", beego.BeforeRouter, FilterUser)
 
 	var FinishRouter = func(ctx *context.Context) {
 		ctx.ResponseWriter.Header().Add("MinDoc-Version", conf.VERSION)
