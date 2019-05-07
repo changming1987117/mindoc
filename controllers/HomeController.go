@@ -6,10 +6,51 @@ import (
 	"github.com/changming1987117/mindoc/models"
 	"github.com/changming1987117/mindoc/utils/pagination"
 	"net/url"
+	"net/http"
+	"crypto/tls"
+	"time"
+	"fmt"
+	"io/ioutil"
+	"strings"
 )
 
 type HomeController struct {
 	BaseController
+}
+
+/**
+ * get_user_info
+ */
+func (c *HomeController) getUserInfo(ticket string) {
+	//app_id := beego.AppConfig.String("sec_id")
+	//app_key := beego.AppConfig.String("sec_key")
+	getUserUrl := beego.AppConfig.String("getUserUrl")
+	//auth_url_template := beego.AppConfig.String("auth_url_template")
+	proxyUrl := beego.AppConfig.String("proxy")
+	/*
+		1. 代理请求
+		2. 跳过https不安全验证
+	*/
+	// webUrl := "http://ip.gs/"
+	// proxyUrl := "http://115.215.71.12:808"
+	proxy, _ := url.Parse(proxyUrl)
+	tr := &http.Transport{
+		Proxy:           http.ProxyURL(proxy),
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{
+		Transport: tr,
+		Timeout:   time.Second * 5, //超时时间
+	}
+	resp, err := client.Get(getUserUrl)
+	if err != nil {
+		fmt.Println("出错了", err)
+		return
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+
 }
 
 func (c *HomeController) Prepare() {
@@ -20,7 +61,16 @@ func (c *HomeController) Prepare() {
 		loginUrl := beego.AppConfig.String("loginUrl")
 		sysUrl := beego.AppConfig.String("sysUrl")
 		appid := beego.AppConfig.String("appid")
-		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+c.Ctx.Request.URL.RequestURI())
+		u := c.Ctx.Request.URL.RequestURI()
+		beego.Info(u)
+		if strings.Contains(u, "kgLoginTicket"){
+			ticketLists := strings.Split(u, ";")
+			ticket := ticketLists[1]
+			returnUrl := ticketLists[0]
+			beego.Info(returnUrl)
+			c.getUserInfo(ticket)
+		}
+		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+u)
 		beego.Info(redirecturl)
 		c.Redirect(redirecturl, 302)
 		//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)

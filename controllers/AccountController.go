@@ -61,40 +61,6 @@ func (c *AccountController) Prepare() {
 		}
 	}
 }
-/**
- * get_user_info
- */
-func (c *AccountController) getUserInfo(ticket string) {
-	//app_id := beego.AppConfig.String("sec_id")
-	//app_key := beego.AppConfig.String("sec_key")
-	opd_get_user_url := beego.AppConfig.String("opd_get_user_url")
-	//auth_url_template := beego.AppConfig.String("auth_url_template")
-	proxyUrl := beego.AppConfig.String("proxy")
-	/*
-		1. 代理请求
-		2. 跳过https不安全验证
-	*/
-	// webUrl := "http://ip.gs/"
-	// proxyUrl := "http://115.215.71.12:808"
-	proxy, _ := url.Parse(proxyUrl)
-	tr := &http.Transport{
-		Proxy:           http.ProxyURL(proxy),
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{
-		Transport: tr,
-		Timeout:   time.Second * 5, //超时时间
-	}
-	resp, err := client.Get(opd_get_user_url)
-	if err != nil {
-		fmt.Println("出错了", err)
-		return
-	}
-	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(body))
-
-}
 
 // Login 用户登录
 func (c *AccountController) Login() {
@@ -112,12 +78,6 @@ func (c *AccountController) Login() {
 		if u == "" {
 
 			u = conf.URLFor("HomeController.Index")
-		}
-		if strings.Contains(u, "kgLoginTicket"){
-			ticketLists := strings.Split(u, ";")
-			ticket := ticketLists[1]
-			//returnUrl := ticketLists[0]
-			c.getUserInfo(ticket)
 		}
 		redirecturl  := loginUrl + "?appId=" + appid + "&url=" + u
 		beego.Info(redirecturl)
