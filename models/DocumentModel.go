@@ -300,8 +300,11 @@ func (item *Document) Processor() *Document {
 			//处理了文档底部信息
 			if selector := docQuery.Find("div.wiki-bottom").First(); selector.Size() <= 0 && item.MemberId > 0 {
 				//处理文档结尾信息
-				docCreator, err := NewMember().Find(item.MemberId, "real_name", "account")
-				release := "<div class=\"wiki-bottom\">文档更新时间: " + item.ModifyTime.Local().Format("2006-01-02 15:04") + " &nbsp;&nbsp;作者："
+				o := orm.NewOrm()
+				doc := NewDocumentHistory()
+				err = o.QueryTable(doc.TableNameWithPrefix()).Filter("document_id", item.DocumentId).OrderBy("-modify_time").One(doc)
+				docCreator, err := NewMember().Find(doc.ModifyAt, "real_name", "account")
+				release := "<div class=\"wiki-bottom\">文档更新时间: " + doc.ModifyTime.Local().Format("2006-01-02 15:04") + " &nbsp;&nbsp;作者："
 				if err == nil && docCreator != nil {
 					if docCreator.RealName != "" {
 						release += docCreator.RealName
