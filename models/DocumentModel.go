@@ -284,7 +284,7 @@ func (item *Document) Processor() *Document {
 					}
 					content.WriteString("</ul></div>")
 					if docQuery == nil {
-						docQuery, err = goquery.NewDocumentFromReader(content);
+						docQuery, err = goquery.NewDocumentFromReader(content)
 					} else {
 						if selector := docQuery.Find("div.wiki-bottom").First(); selector.Size() > 0 {
 							selector.BeforeHtml(content.String())
@@ -305,6 +305,7 @@ func (item *Document) Processor() *Document {
 				err = o.QueryTable(doc.TableNameWithPrefix()).Filter("document_id", item.DocumentId).OrderBy("-modify_time").One(doc)
 				docModifyer, err := NewMember().Find(doc.ModifyAt, "real_name", "account")
 				beego.Info(doc.ModifyAt)
+				beego.Info(item.DocumentId)
 				release := "<div class=\"wiki-bottom\">文档更新时间: " + doc.ModifyTime.Local().Format("2006-01-02 15:04") + " &nbsp;&nbsp;作者："
 				if err == nil && docModifyer != nil {
 					if docModifyer.RealName != "" {
