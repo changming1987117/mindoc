@@ -52,6 +52,22 @@ const (
 type BookRole int
 
 const (
+	// 创始人.
+	DocuementFounder DocuementRole = iota
+	//管理者
+	DocuementAdmin
+	//编辑者.
+	DocuementEditor
+	//观察者
+	DocuementObserver
+	//游客
+	DocuementGuest
+)
+
+//项目角色
+type DocuementRole int
+
+const (
 	LoggerOperate   = "operate"
 	LoggerSystem    = "system"
 	LoggerException = "exception"
