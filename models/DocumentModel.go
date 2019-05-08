@@ -303,13 +303,14 @@ func (item *Document) Processor() *Document {
 				o := orm.NewOrm()
 				doc := NewDocumentHistory()
 				err = o.QueryTable(doc.TableNameWithPrefix()).Filter("document_id", item.DocumentId).OrderBy("-modify_time").One(doc)
-				docCreator, err := NewMember().Find(doc.ModifyAt, "real_name", "account")
+				docModifyer, err := NewMember().Find(doc.ModifyAt, "real_name", "account")
+				beego.Info(doc.ModifyAt)
 				release := "<div class=\"wiki-bottom\">文档更新时间: " + doc.ModifyTime.Local().Format("2006-01-02 15:04") + " &nbsp;&nbsp;作者："
-				if err == nil && docCreator != nil {
-					if docCreator.RealName != "" {
-						release += docCreator.RealName
+				if err == nil && docModifyer != nil {
+					if docModifyer.RealName != "" {
+						release += docModifyer.RealName
 					} else {
-						release += docCreator.Account
+						release += docModifyer.Account
 					}
 				}
 				release += "</div>"
