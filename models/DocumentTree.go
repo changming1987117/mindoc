@@ -7,6 +7,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/changming1987117/mindoc/conf"
 	"fmt"
+	"github.com/astaxie/beego"
 )
 
 type DocumentTree struct {
@@ -43,7 +44,10 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 
 	for index, item := range docs {
 		var documentrelationship DocumentRelationship
+		beego.Info(item.DocumentId)
+		beego.Info(MemberId)
 		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
+		beego.Info(roleId)
 		if err != nil && roleId == 4{
 			continue
 		}

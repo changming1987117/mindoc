@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/astaxie/beego/orm"
 	"github.com/changming1987117/mindoc/conf"
+	"github.com/astaxie/beego"
 )
 
 type DocumentRelationship struct {
@@ -53,7 +54,8 @@ func (m *DocumentRelationship) FindForRoleId(documentId int, memberId int) (conf
 	relationship := NewDocumentRelationship()
 
 	err := o.QueryTable(m.TableNameWithPrefix()).Filter("document_id", documentId).Filter("member_id", memberId).One(relationship)
-
+	beego.Info(err)
+	beego.Info(relationship.RoleId)
 	if err != nil {
 
 		return 0, err
