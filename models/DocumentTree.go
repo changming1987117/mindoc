@@ -42,8 +42,9 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 	trees = make([]*DocumentTree, count)
 
 	for index, item := range docs {
-		role_id, err := DocumentRelationship.FindForRoleId(item.DocumentId, MemberId)
-		if err != nil && role_id == 4{
+		var documentrelationship DocumentRelationship
+		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
+		if err != nil && roleId == 4{
 			continue
 		}
 		tree := &DocumentTree{}

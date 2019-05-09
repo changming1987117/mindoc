@@ -1,8 +1,6 @@
 package models
 
 import (
-	"errors"
-	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 	"github.com/changming1987117/mindoc/conf"
 )
