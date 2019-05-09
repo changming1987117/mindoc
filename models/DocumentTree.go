@@ -31,33 +31,17 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 
 	trees := make([]*DocumentTree, 0)
 
-	var docs []*Document
-
-	count, err := o.QueryTable(item).Filter("book_id", bookId).OrderBy("order_sort", "document_id").Limit(math.MaxInt32).All(&docs, "document_id", "version", "document_name", "parent_id", "identify","is_open")
-
+	count, err := o.QueryTable(item).Filter("book_id", bookId).Filter("documentrelationship__MemberId", MemberId).Filter("documentrelationship__RoleId__lt", 4).OrderBy("order_sort", "document_id").Limit(math.MaxInt32).All(&docs, "document_id", "version", "document_name", "parent_id", "identify","is_open")
+	beego.Info(err)
+	beego.Info(count)
 	if err != nil {
 		return trees, err
 	}
-	beego.Info(count)
+
 	book, _ := NewBook().Find(bookId)
-	for i, item := range docs {
-		beego.Info(i)
-		var documentrelationship DocumentRelationship
-		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
-		if err == nil && roleId == 4{
-			count--
-			continue
-		}
-	}
-	beego.Info(count)
 	trees = make([]*DocumentTree, count)
 
 	for index, item := range docs {
-		var documentrelationship DocumentRelationship
-		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
-		if err == nil && roleId == 4{
-			continue
-		}
 		tree := &DocumentTree{}
 		if index == 0 {
 			tree.State = &DocumentSelected{Selected: true, Opened: true}

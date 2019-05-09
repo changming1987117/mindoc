@@ -9,6 +9,7 @@ type DocumentRelationship struct {
 	RelationshipId int `orm:"pk;auto;unique;column(relationship_id)" json:"relationship_id"`
 	MemberId       int `orm:"column(member_id);type(int)" json:"member_id"`
 	DocumentId         int `orm:"column(document_id);type(int)" json:"document_id"`
+	Document *Document `orm:"rel(fk)"`
 	// RoleId 角色：0 创始人(创始人不能被移除) / 1 管理员/2 编辑者/3 观察者/4 游客
 	RoleId conf.DocuementRole `orm:"column(role_id);type(int)" json:"role_id"`
 }
