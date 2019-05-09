@@ -97,10 +97,28 @@ func (c *BaseController) Prepare() {
 	if b, err := ioutil.ReadFile(filepath.Join(beego.BConfig.WebConfig.ViewsPath, "widgets", "scripts.tpl")); err == nil {
 		c.Data["Scripts"] = template.HTML(string(b))
 	}
-	u := c.GetString("url")
 	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
 		c.Member = &member
 		c.Data["Member"] = c.Member
+	}
+	var remember CookieRemember
+	// 如果 Cookie 中存在登录信息
+	if cookie, ok := c.GetSecureCookie(conf.GetAppKey(), "login"); ok {
+		if err := utils.Decode(cookie, &remember); err == nil {
+			if member, err := models.NewMember().Find(remember.MemberId); err == nil {
+				c.SetMember(*member)
+				c.Member = member
+				c.Data["Member"] = member
+			}
+		}
+	}
+
+}
+
+//登录
+func (c * BaseController) Logged(){
+	u := c.GetString("url")
+	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
 		if u == "" {
 
 			u = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
@@ -183,8 +201,6 @@ func (c *BaseController) Prepare() {
 		beego.Info(redirecturl)
 		c.Redirect(redirecturl, 302)
 	}
-
-
 }
 //判断用户是否登录.
 func (c *BaseController)isUserLoggedIn() bool {

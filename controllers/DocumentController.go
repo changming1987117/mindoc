@@ -1288,6 +1288,7 @@ func promptUserToLogIn(c *DocumentController) {
 		c.JsonResult(6000, "请重新登录。")
 	} else {
 		c.Prepare()
+		c.Logged()
 		//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
 	}
 }
