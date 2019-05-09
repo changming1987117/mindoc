@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"net/url"
 	"image/png"
 	"fmt"
 	"github.com/astaxie/beego"
