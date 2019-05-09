@@ -224,7 +224,7 @@ func (c *DocumentController) Edit() {
 
 	c.Data["Result"] = template.JS("[]")
 
-	trees, err := models.NewDocument().FindDocumentTree(bookResult.BookId)
+	trees, err := models.NewDocument().FindDocumentTree(bookResult.BookId, c.Member.MemberId)
 
 	if err != nil {
 		beego.Error("FindDocumentTree => ", err)
