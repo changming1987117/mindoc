@@ -48,7 +48,7 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 			count--
 			continue
 		}
-		append(newdocs, item)
+		newdocs = append(newdocs, item)
 	}
 	beego.Info(count)
 	if err != nil {
