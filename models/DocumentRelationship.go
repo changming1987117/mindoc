@@ -54,8 +54,6 @@ func (m *DocumentRelationship) FindForRoleId(documentId int, memberId int) (conf
 	relationship := NewDocumentRelationship()
 
 	err := o.QueryTable(m.TableNameWithPrefix()).Filter("document_id", documentId).Filter("member_id", memberId).One(relationship)
-	beego.Info(err)
-	beego.Info(relationship.RoleId)
 	if err != nil {
 
 		return 0, err
