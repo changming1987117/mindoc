@@ -25,7 +25,7 @@ type DocumentSelected struct {
 }
 
 //获取项目的文档树状结构
-func (item *Document) FindDocumentTree(bookId int) ([]*DocumentTree, error) {
+func (item *Document) FindDocumentTree(bookId int, member Member) ([]*DocumentTree, error) {
 	o := orm.NewOrm()
 
 	trees := make([]*DocumentTree, 0)
@@ -42,6 +42,7 @@ func (item *Document) FindDocumentTree(bookId int) ([]*DocumentTree, error) {
 	trees = make([]*DocumentTree, count)
 
 	for index, item := range docs {
+		role_id, err := DocumentRelationship.FindForRoleId(item.DocumentId, member.MemberId)
 		tree := &DocumentTree{}
 		if index == 0 {
 			tree.State = &DocumentSelected{Selected: true, Opened: true}
@@ -68,8 +69,8 @@ func (item *Document) FindDocumentTree(bookId int) ([]*DocumentTree, error) {
 	return trees, nil
 }
 
-func (item *Document) CreateDocumentTreeForHtml(bookId, selectedId int) (string, error) {
-	trees, err := item.FindDocumentTree(bookId)
+func (item *Document) CreateDocumentTreeForHtml(bookId, selectedId int, member Member) (string, error) {
+	trees, err := item.FindDocumentTree(bookId, member)
 	if err != nil {
 		return "", err
 	}

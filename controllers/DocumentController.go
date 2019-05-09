@@ -155,7 +155,7 @@ func (c *DocumentController) Read() {
 		c.JsonResult(0, "ok", data)
 	}
 
-	tree, err := models.NewDocument().CreateDocumentTreeForHtml(bookResult.BookId, doc.DocumentId)
+	tree, err := models.NewDocument().CreateDocumentTreeForHtml(bookResult.BookId, doc.DocumentId, c.Member)
 
 	if err != nil && err != orm.ErrNoRows {
 		beego.Error("生成项目文档树时出错 ->", err)

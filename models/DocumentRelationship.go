@@ -49,7 +49,7 @@ func (m *DocumentRelationship) Find(id int) (*DocumentRelationship, error) {
 	return m, err
 }
 
-func (m *DocumentRelationship) FindForRoleId(bookId, memberId int) (conf.BookRole, error) {
+func (m *DocumentRelationship) FindForRoleId(bookId, memberId int) (conf.DocuementRole, error) {
 	o := orm.NewOrm()
 
 	relationship := NewDocumentRelationship()
