@@ -44,8 +44,8 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 
 	for index, item := range docs {
 		var documentrelationship DocumentRelationship
-		roleId, _ := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
-		if roleId == 4{
+		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
+		if err == nil && roleId == 4{
 			beego.Info(roleId)
 			continue
 		}
