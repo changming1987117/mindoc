@@ -7,6 +7,7 @@ import (
 	"github.com/changming1987117/mindoc/conf"
 	"fmt"
 	"github.com/astaxie/beego"
+	"math"
 )
 
 type DocumentTree struct {
@@ -30,21 +31,32 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 
 	trees := make([]*DocumentTree, 0)
 	var docs []*Document
-	sql := `select "document_id", "version", "document_name", "parent_id", "identify","is_open"
-from md_document as doc
-left join md_documentrelationship as docrelation 
-where doc.book_id = ? and docrelation.member_id = ?  docrelation.role_id < 4 and order by doc.order_sort, document_id asc limit 1000;`
-	count, err := o.Raw(sql, bookId, MemberId).QueryRows(&docs)
-	beego.Info(sql)
+	var newdocs []*Document
+
+	count, err := o.QueryTable(item).Filter("book_id", bookId).OrderBy("order_sort", "document_id").Limit(math.MaxInt32).All(&docs, "document_id", "version", "document_name", "parent_id", "identify","is_open")
+
+	if err != nil {
+		return trees, err
+	}
+	beego.Info(count)
+	book, _ := NewBook().Find(bookId)
+	for i, item := range docs {
+		beego.Info(i)
+		var documentrelationship DocumentRelationship
+		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
+		if err == nil && roleId == 4{
+			count--
+			continue
+		}
+		append(newdocs, item)
+	}
 	beego.Info(count)
 	if err != nil {
 		return trees, err
 	}
-
-	book, _ := NewBook().Find(bookId)
 	trees = make([]*DocumentTree, count)
 
-	for index, item := range docs {
+	for index, item := range newdocs {
 		tree := &DocumentTree{}
 		if index == 0 {
 			tree.State = &DocumentSelected{Selected: true, Opened: true}
