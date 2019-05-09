@@ -39,14 +39,22 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 		return trees, err
 	}
 	book, _ := NewBook().Find(bookId)
-
+	for index, item := range docs {
+		var documentrelationship DocumentRelationship
+		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
+		beego.Info(index)
+		beego.Info(roleId)
+		if err == nil && roleId == 4{
+			count--
+			continue
+		}
+	}
 	trees = make([]*DocumentTree, count)
 
 	for index, item := range docs {
 		var documentrelationship DocumentRelationship
 		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
 		if err == nil && roleId == 4{
-			beego.Info(roleId)
 			continue
 		}
 		tree := &DocumentTree{}
