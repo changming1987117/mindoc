@@ -15,6 +15,7 @@ import (
 	"path/filepath"
 	"io/ioutil"
 	"html/template"
+	"net/url"
 )
 
 type BaseController struct {
@@ -42,24 +43,6 @@ func (c *BaseController) Prepare() {
 
 	c.EnableAnonymous = false
 	c.EnableDocumentHistory = false
-
-	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
-
-		c.Member = &member
-		c.Data["Member"] = c.Member
-	} else {
-		var remember CookieRemember
-		// //如果Cookie中存在登录信息，从cookie中获取用户信息
-		if cookie, ok := c.GetSecureCookie(conf.GetAppKey(), "login"); ok {
-			if err := utils.Decode(cookie, &remember); err == nil {
-				if member, err := models.NewMember().Find(remember.MemberId); err == nil {
-					c.Member = member
-					c.Data["Member"] = member
-					c.SetMember(*member)
-				}
-			}
-		}
-	}
 	conf.BaseUrl = c.BaseUrl()
 	c.Data["BaseUrl"] = c.BaseUrl()
 
@@ -77,6 +60,93 @@ func (c *BaseController) Prepare() {
 	if b, err := ioutil.ReadFile(filepath.Join(beego.BConfig.WebConfig.ViewsPath, "widgets", "scripts.tpl")); err == nil {
 		c.Data["Scripts"] = template.HTML(string(b))
 	}
+	u := c.GetString("url")
+	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
+		c.Member = &member
+		c.Data["Member"] = c.Member
+		if u == "" {
+
+			u = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
+		}
+		beego.Info(u)
+		c.Redirect(u, 302)
+	}
+	var remember CookieRemember
+	var account AccountController
+	// 如果 Cookie 中存在登录信息
+	if cookie, ok := c.GetSecureCookie(conf.GetAppKey(), "login"); ok {
+		if err := utils.Decode(cookie, &remember); err == nil {
+			if member, err := models.NewMember().Find(remember.MemberId); err == nil {
+				c.SetMember(*member)
+				c.Member = member
+				c.Data["Member"] = member
+				account.LoggedIn(false)
+				u = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
+				c.Redirect(u, 302)
+			}
+		}
+	}
+	//如果没有开启匿名访问，则跳转到登录页面
+	if c.Member == nil {
+
+		loginUrl := beego.AppConfig.String("loginUrl")
+		sysUrl := beego.AppConfig.String("sysUrl")
+		appid := beego.AppConfig.String("appid")
+		ticket := beego.AppConfig.String("ticket")
+		u := c.Ctx.Request.URL.RequestURI()
+		beego.Info(u)
+		if strings.Contains(u, ticket) {
+			beego.Info(ticket)
+			ticketLists := strings.Split(u, "?")
+			realticket := strings.Split(ticketLists[1], "&")[0]
+			returnUrl := ticketLists[0]
+			resp := c.getUserInfo(realticket)
+			var res Result
+			json.Unmarshal(resp, &res)
+			chineseName := res.Data["chineseName"]
+			userName := res.Data["userName"]
+			email := res.Data["email"]
+			beego.Info(email)
+			member := models.NewMember()
+			member, err := member.FindByAccount(userName)
+			if err == nil && member.MemberId > 0 {
+			} else {
+				member.Account = userName
+				member.Password = email
+				member.Role = 2
+				member.Avatar = conf.GetDefaultAvatar()
+				member.CreateAt = 1
+				member.Email = email
+				member.RealName = chineseName
+				err :=member.Add()
+				if err != nil {
+					beego.Info(err)
+				}
+				m := models.NewRelationship()
+				m.BookId = 2
+				m.MemberId = member.MemberId
+				m.RoleId = 3
+				m.Insert()
+			}
+			beego.Info("test")
+			loginMem, err := member.Login(userName, email)
+			beego.Info(err)
+			if err == nil {
+				loginMem.LastLoginTime = time.Now()
+				loginMem.Update()
+				beego.Info("login sucess")
+				c.SetMember(*loginMem)
+				returnUrl = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
+				beego.Info(returnUrl)
+				c.Redirect(returnUrl, 302)
+				return
+			}
+		}
+		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+u)
+		beego.Info(redirecturl)
+		c.Redirect(redirecturl, 302)
+	}
+
 
 }
 //判断用户是否登录.
