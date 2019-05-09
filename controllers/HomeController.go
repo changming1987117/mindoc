@@ -5,12 +5,6 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/changming1987117/mindoc/models"
 	"github.com/changming1987117/mindoc/utils/pagination"
-	"net/url"
-	"net/http"
-	"crypto/tls"
-	"time"
-	"fmt"
-	"io/ioutil"
 )
 
 type HomeController struct {
