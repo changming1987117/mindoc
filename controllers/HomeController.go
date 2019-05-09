@@ -67,7 +67,7 @@ func (c *HomeController) Prepare() {
 	if member, ok := c.GetSession(conf.LoginSessionName).(models.Member); ok && member.MemberId > 0 {
 		if u == "" {
 
-			u = conf.URLFor("BookController.Index")
+			u = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
 		}
 		beego.Info(u)
 		c.Redirect(u, 302)
@@ -80,7 +80,7 @@ func (c *HomeController) Prepare() {
 			if member, err := models.NewMember().Find(remember.MemberId); err == nil {
 				c.SetMember(*member)
 				account.LoggedIn(false)
-				u = conf.URLFor("BookController.Index")
+				u = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
 				c.Redirect(u, 302)
 			}
 		}
@@ -124,7 +124,7 @@ func (c *HomeController) Prepare() {
 				m := models.NewRelationship()
 				m.BookId = 2
 				m.MemberId = member.MemberId
-				m.RoleId = 2
+				m.RoleId = 3
 				m.Insert()
 			}
 			beego.Info("test")
@@ -135,7 +135,7 @@ func (c *HomeController) Prepare() {
 				loginMem.Update()
 				beego.Info("login sucess")
 				c.SetMember(*loginMem)
-				returnUrl = conf.URLFor("BookController.Index")
+				returnUrl = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
 				beego.Info(returnUrl)
 				c.Redirect(returnUrl, 302)
 				return
