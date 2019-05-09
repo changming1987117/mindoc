@@ -31,8 +31,12 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 
 	trees := make([]*DocumentTree, 0)
 	var docs []*Document
-	count, err := o.QueryTable(item).Filter("book_id", bookId).Filter("documentrelationship__MemberId", MemberId).Filter("documentrelationship__RoleId__lt", 4).OrderBy("order_sort", "document_id").Limit(math.MaxInt32).All(&docs, "document_id", "version", "document_name", "parent_id", "identify","is_open")
-	beego.Info(err)
+	sql := `select "document_id", "version", "document_name", "parent_id", "identify","is_open"
+from md_document as doc
+left join md_documentrelationship as docrelation 
+where doc.book_id = ? and docrelation.member_id = ?  docrelation.role_id < 4 and order by doc.order_sort, document_id asc limit 1000;`
+	count, err := o.Raw(sql, bookId, MemberId).QueryRows(&docs)
+	beego.Info(sql)
 	beego.Info(count)
 	if err != nil {
 		return trees, err
