@@ -1288,12 +1288,8 @@ func promptUserToLogIn(c *DocumentController) {
 	if c.IsAjax() {
 		c.JsonResult(6000, "请重新登录。")
 	} else {
-		loginUrl := beego.AppConfig.String("loginUrl")
-		sysUrl := beego.AppConfig.String("sysUrl")
-		appid := beego.AppConfig.String("appid")
-		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl)
-		beego.Info(redirecturl)
-		c.Redirect(redirecturl, 302)
+		c := HomeController{}
+		c.Prepare()
 		//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
 	}
 }
