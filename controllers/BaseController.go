@@ -16,6 +16,9 @@ import (
 	"io/ioutil"
 	"html/template"
 	"net/url"
+	"net/http"
+	"crypto/tls"
+	"fmt"
 )
 
 type BaseController struct {
@@ -30,6 +33,40 @@ type CookieRemember struct {
 	MemberId int
 	Account  string
 	Time     time.Time
+}
+
+/**
+ * get_user_info
+ */
+func (c *BaseController) getUserInfo(ticket string) []byte {
+	appid := beego.AppConfig.String("appid")
+	appkey := beego.AppConfig.String("sec_key")
+	getUserUrl := beego.AppConfig.String("getUserUrl")
+	proxyUrl := beego.AppConfig.String("proxy")
+	realurl := getUserUrl + "?appid=" + appid + "&appsecret=" + appkey + "&" + ticket
+	beego.Info(realurl)
+	/*
+		1. 代理请求
+		2. 跳过https不安全验证
+	*/
+	proxy, _ := url.Parse(proxyUrl)
+	tr := &http.Transport{
+		Proxy:           http.ProxyURL(proxy),
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{
+		Transport: tr,
+		Timeout:   time.Second * 5, //超时时间
+	}
+	resp, err := client.Get(realurl)
+	if err != nil {
+		fmt.Println("出错了", err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+	return body
+
 }
 
 // Prepare 预处理.
