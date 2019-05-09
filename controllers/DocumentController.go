@@ -70,7 +70,7 @@ func (c *DocumentController) Index() {
 		c.Data["Content"] = template.HTML(blackfriday.Run([]byte(bookResult.Description)))
 	}
 
-	tree, err := models.NewDocument().CreateDocumentTreeForHtml(bookResult.BookId, selected)
+	tree, err := models.NewDocument().CreateDocumentTreeForHtml(bookResult.BookId, selected, c.Member.MemberId)
 
 	if err != nil {
 		if err == orm.ErrNoRows {
