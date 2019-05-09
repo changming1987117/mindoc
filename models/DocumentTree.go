@@ -43,6 +43,9 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 
 	for index, item := range docs {
 		role_id, err := DocumentRelationship.FindForRoleId(item.DocumentId, MemberId)
+		if err != nil && role_id == 4{
+			continue
+		}
 		tree := &DocumentTree{}
 		if index == 0 {
 			tree.State = &DocumentSelected{Selected: true, Opened: true}

@@ -49,12 +49,12 @@ func (m *DocumentRelationship) Find(id int) (*DocumentRelationship, error) {
 	return m, err
 }
 
-func (m *DocumentRelationship) FindForRoleId(bookId, memberId int) (conf.DocuementRole, error) {
+func (m *DocumentRelationship) FindForRoleId(documentId int, memberId int) (conf.DocuementRole, error) {
 	o := orm.NewOrm()
 
 	relationship := NewDocumentRelationship()
 
-	err := o.QueryTable(m.TableNameWithPrefix()).Filter("document_id", bookId).Filter("member_id", memberId).One(relationship)
+	err := o.QueryTable(m.TableNameWithPrefix()).Filter("document_id", documentId).Filter("member_id", memberId).One(relationship)
 
 	if err != nil {
 
