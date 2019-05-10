@@ -19,6 +19,7 @@ type Result struct {
 
 func (c *HomeController) Prepare() {
 	c.BaseController.Prepare()
+	c.BaseController.Logged()
 	//c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
 }
 
