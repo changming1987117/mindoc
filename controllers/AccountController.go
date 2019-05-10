@@ -85,7 +85,7 @@ func (c *AccountController) Login() {
 			}
 		}
 	}
-
+	c.Logged()
 	if c.Ctx.Input.IsPost() {
 		account := c.GetString("account")
 		password := c.GetString("password")
