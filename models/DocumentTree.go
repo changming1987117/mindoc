@@ -6,7 +6,6 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/changming1987117/mindoc/conf"
 	"fmt"
-	"github.com/astaxie/beego"
 	"math"
 )
 
