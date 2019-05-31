@@ -44,7 +44,6 @@ func (c *BaseController) getUserInfo(ticket string) []byte {
 	getUserUrl := beego.AppConfig.String("getUserUrl")
 	proxyUrl := beego.AppConfig.String("proxy")
 	realurl := getUserUrl + "?appid=" + appid + "&appsecret=" + appkey + "&" + ticket
-	beego.Info(realurl)
 	/*
 		1. 代理请求
 		2. 跳过https不安全验证
@@ -123,7 +122,6 @@ func (c * BaseController) Logged(){
 
 			u = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
 		}
-		beego.Info(u)
 		c.Redirect(u, 302)
 	}
 	var remember CookieRemember
@@ -149,9 +147,7 @@ func (c * BaseController) Logged(){
 		appid := beego.AppConfig.String("appid")
 		ticket := beego.AppConfig.String("ticket")
 		u := c.Ctx.Request.URL.RequestURI()
-		beego.Info(u)
 		if strings.Contains(u, ticket) {
-			beego.Info(ticket)
 			ticketLists := strings.Split(u, "?")
 			realticket := strings.Split(ticketLists[1], "&")[0]
 			returnUrl := ticketLists[0]
@@ -161,7 +157,6 @@ func (c * BaseController) Logged(){
 			chineseName := res.Data["chineseName"]
 			userName := res.Data["userName"]
 			email := res.Data["email"]
-			beego.Info(email)
 			member := models.NewMember()
 			member, err := member.FindByAccount(userName)
 			if err == nil && member.MemberId > 0 {
@@ -183,22 +178,17 @@ func (c * BaseController) Logged(){
 				m.RoleId = 3
 				m.Insert()
 			}
-			beego.Info("test")
 			loginMem, err := member.Login(userName, email)
-			beego.Info(err)
 			if err == nil {
 				loginMem.LastLoginTime = time.Now()
 				loginMem.Update()
-				beego.Info("login sucess")
 				c.SetMember(*loginMem)
 				returnUrl = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
-				beego.Info(returnUrl)
 				c.Redirect(returnUrl, 302)
 				return
 			}
 		}
 		redirecturl := loginUrl + "?appId=" + appid + "&url=" + url.PathEscape(sysUrl+u)
-		beego.Info(redirecturl)
 		c.Redirect(redirecturl, 302)
 	}
 }

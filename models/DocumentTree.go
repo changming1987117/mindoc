@@ -38,10 +38,8 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 	if err != nil {
 		return trees, err
 	}
-	beego.Info(count)
 	book, _ := NewBook().Find(bookId)
-	for i, item := range docs {
-		beego.Info(i)
+	for _, item := range docs {
 		var documentrelationship DocumentRelationship
 		roleId, err := documentrelationship.FindForRoleId(item.DocumentId, MemberId)
 		if err == nil && roleId == 4{
@@ -50,7 +48,6 @@ func (item *Document) FindDocumentTree(bookId int, MemberId int) ([]*DocumentTre
 		}
 		newdocs = append(newdocs, item)
 	}
-	beego.Info(count)
 	if err != nil {
 		return trees, err
 	}
