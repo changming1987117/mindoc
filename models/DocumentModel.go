@@ -304,8 +304,6 @@ func (item *Document) Processor() *Document {
 				doc := NewDocumentHistory()
 				err = o.QueryTable(doc.TableNameWithPrefix()).Filter("document_id", item.DocumentId).OrderBy("-modify_time").One(doc)
 				docModifyer, err := NewMember().Find(doc.ModifyAt, "real_name", "account")
-				beego.Info(doc.ModifyAt)
-				beego.Info(item.DocumentId)
 				release := "<div class=\"wiki-bottom\">文档更新时间: " + doc.ModifyTime.Local().Format("2006-01-02 15:04") + " &nbsp;&nbsp;作者："
 				if err == nil && docModifyer != nil {
 					if docModifyer.RealName != "" {

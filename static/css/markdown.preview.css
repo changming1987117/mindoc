@@ -142,7 +142,6 @@
     border: none;
     overflow: auto;
     line-height: 1.45;
-    max-height: 35em;
     position: relative;
     /*background: url(../editor.md/lib/highlight/blueprint.png) #F6F6F6;*/
     -moz-background-size: 30px,30px;
