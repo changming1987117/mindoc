@@ -146,7 +146,9 @@ func (c * BaseController) Logged(){
 		sysUrl := beego.AppConfig.String("sysUrl")
 		appid := beego.AppConfig.String("appid")
 		ticket := beego.AppConfig.String("ticket")
+
 		u := c.Ctx.Request.URL.RequestURI()
+		beego.Info(u)
 		if strings.Contains(u, ticket) {
 			ticketLists := strings.Split(u, "?")
 			realticket := strings.Split(ticketLists[1], "&")[0]
