@@ -186,7 +186,7 @@ func (c * BaseController) Logged(){
 				loginMem.Update()
 				c.SetMember(*loginMem)
 				beego.Info(returnUrl)
-				returnUrl = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
+				//returnUrl = conf.URLFor("DocumentController.Index", ":key", "bumenzichanku")
 				c.Redirect(returnUrl, 302)
 				return
 			}
