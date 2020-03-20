@@ -56,6 +56,9 @@
 <div class="m-manual manual-editor">
     <div class="manual-head" id="editormd-tools" style="min-width: 1200px; position:absolute;">
         <div class="editormd-group">
+            <a href="{{urlfor "DocumentController.Index" ":key" "bumenzichanku"}}" data-toggle="tooltip" data-title="返回"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+        </div>
+        <div class="editormd-group">
             <a href="javascript:;" id="markdown-save" data-toggle="tooltip" data-title="保存" class="disabled save"><i class="fa fa-save first" aria-hidden="true" name="save"></i></a>
             <a href="javascript:;" id="markdown-template" data-toggle="tooltip" data-title="保存为模板" class="template"><i class="fa fa-briefcase last" aria-hidden="true" name="save-template"></i></a>
         </div>
