@@ -196,9 +196,9 @@ $(function () {
             layer.msg("获取当前文档信息失败");
             return;
         }
-        var $then =  $(".cm-error");
+        var $then = $(".cm-error");
         if($then.length>0){
-            layer.msg("您编辑的格式有问题,请检查后再发布");
+            layer.msg("您编辑的文档格式有问题,请修改后再保存");
             return;
         }
         var doc_id = parseInt(node.id);

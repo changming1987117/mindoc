@@ -229,7 +229,7 @@ function pushVueLists($lists) {
 function releaseBook() {
     var $then =  $(".cm-error");
     if($then.length>0){
-        layer.msg("您编辑的格式有问题,请检查后再发布");
+        layer.msg("您编辑的格式有问题,请修改后再发布");
         return;
     }
     $.ajax({
