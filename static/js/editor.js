@@ -227,6 +227,11 @@ function pushVueLists($lists) {
  * 发布项目
  */
 function releaseBook() {
+    var $then =  $(".cm-error");
+    if($then.length>0){
+        layer.msg("您编辑的格式有问题,请检查后再发布");
+        return;
+    }
     $.ajax({
         url: window.releaseURL,
         data: { "identify": window.book.identify },

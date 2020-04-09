@@ -101,6 +101,11 @@ $(function () {
      * @param $is_cover
      */
     function saveBlog($is_cover) {
+        var $then =  $(".cm-error");
+        if($then.length>0){
+            layer.msg("您编辑的格式有问题,请检查后再发布");
+            return;
+        }
         var content = window.editor.getMarkdown();
         var html = window.editor.getPreviewedHTML();
 

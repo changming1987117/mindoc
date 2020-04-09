@@ -196,7 +196,11 @@ $(function () {
             layer.msg("获取当前文档信息失败");
             return;
         }
-
+        var $then =  $(".cm-error");
+        if($then.length>0){
+            layer.msg("您编辑的格式有问题,请检查后再发布");
+            return;
+        }
         var doc_id = parseInt(node.id);
 
         for (var i in window.documentCategory) {
