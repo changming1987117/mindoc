@@ -42,13 +42,11 @@ func (c *BaseController) getUserInfo(ticket string) []byte {
 	appid := beego.AppConfig.String("appid")
 	appkey := beego.AppConfig.String("sec_key")
 	getUserUrl := beego.AppConfig.String("getUserUrl")
-	proxyUrl := beego.AppConfig.String("proxy")
 	realurl := getUserUrl + "?appid=" + appid + "&appsecret=" + appkey + "&" + ticket
 	/*
 		1. 代理请求
 		2. 跳过https不安全验证
 	*/
-	proxy, _ := url.Parse(proxyUrl)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
