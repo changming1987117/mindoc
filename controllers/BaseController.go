@@ -50,7 +50,6 @@ func (c *BaseController) getUserInfo(ticket string) []byte {
 	*/
 	proxy, _ := url.Parse(proxyUrl)
 	tr := &http.Transport{
-		Proxy:           http.ProxyURL(proxy),
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	client := &http.Client{
